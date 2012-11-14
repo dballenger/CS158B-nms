@@ -1,0 +1,29 @@
+<h1 id="mib_browser">MIB Browser</h1>
+
+<div class="mib-list">
+  <%= text_field_tag(:mib_filter, nil, {:placeholder => "Filter MIBs..."}) %>
+  <div id="count"></div>
+  <ul>
+    <% @mibs.each do |mib| %>
+      <li><%= link_to_function(mib.first, "$('#oid').attr('value', '#{mib.last}');") %></li>
+    <% end %>
+  </ul>
+</div>
+
+<h2>Run Operation</h2>
+<%= form_tag(snmp_request_mib_browser_path, :remote => true, :id => "request") do %>
+  <%= text_field_tag(:host, nil, :placeholder => "Host") %>
+  <%= text_field_tag(:community, nil, :placeholder => "Community") %>
+  <%= text_field_tag(:oid, nil, {:placeholder => "SNMP MIB OID", :size => 40}) %>
+  <%= select_tag(:type, raw("<option>Object</option><option>Index Based</option>")) %>
+  <%= text_field_tag(:value, nil, {:placeholder => "Set value", :size => 40}) %>
+  <%= submit_tag("Submit Request") %>
+  <%= javascript_tag do %>
+    $("#request").bind("ajaxSend", function () {
+      $("#spinner").fadeIn();
+    });
+  <% end %>
+  <%= image_tag("spinner.gif", :id => "spinner", :style => "display:none;") %>
+<% end %>
+
+<div id="results"></div>

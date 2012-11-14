@@ -1,0 +1,2 @@
+module MibBrowserHelper
+end
