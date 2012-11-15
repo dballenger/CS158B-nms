@@ -1,2 +1,11 @@
-$("#results").prepend("<h2>Results</h2><%= params[:oid] %> (<%= @response.varbind_list.first.name %>): <%= @response.varbind_list.first.value %>");
+<% if @snmp_response.is_a?(Array) %>
+  <% time = Time.now.to_i %>
+  $("#results").prepend("<h2>Table Walk Results - <%= params[:host] %></h2><div id='results_<%= time %>'></div>");
+  
+  $("#results_<%= time %>").append("<%= raw @buffer %>");
+  
+<% else %>
+  $("#results").prepend("<h2>Results</h2><%= params[:host] %> - <%= params[:oid] %> (<%= @snmp_response.varbind_list.first.name %>): <%= @snmp_response.varbind_list.first.value %>");
+<% end %>
+
 $("#spinner").fadeOut();

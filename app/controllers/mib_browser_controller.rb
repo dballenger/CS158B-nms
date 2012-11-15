@@ -7,6 +7,8 @@ class MibBrowserController < ApplicationController
     @manager = SNMP::Manager.new(:host => params[:host],
                                  :community => params[:community])
     
+    
+    
     if params[:value].present?
       oid = params[:oid] + ".0"
       binding= SNMP::VarBind.new(oid, SNMP::OctetString.new(params[:value]))
@@ -15,17 +17,22 @@ class MibBrowserController < ApplicationController
     
     if params[:type] == "Object"
       oid = params[:oid] + ".0"
-      @response = @manager.get(oid)
+      @snmp_response = @manager.get(oid)
     else
-      @walked = []
+      @snmp_response = []
       
-      @manager.walk(params[:oid]) do |row|
-        @walked << row
-      end
+      oids_to_walk = params[:oid].split(",")
+      
+      @buffer = "<table>"
+      @buffer += "<tr>" + oids_to_walk.collect { |o| '<th>' + o + '</th>'}.join('') + "</tr>"
+      @manager.walk(oids_to_walk) { |row| @buffer += "<tr>#{row.collect { |r| '<td>' + r.value.to_s + '</td>'}.join('')}</tr>" }
+      @buffer += "</table>"
     end
     
-    puts @walked.inspect
-    
+  rescue SNMP::RequestTimeout
+    render :js => '$("#results").prepend("<h2>Results</h2> ' + params[:host] + ' - ' + params[:oid] + ' - Request timed out.");
+    $("#spinner").fadeOut();'
+  ensure
     @manager.close
   end
 end
