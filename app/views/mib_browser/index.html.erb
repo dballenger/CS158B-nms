@@ -5,7 +5,7 @@
   <div id="count"></div>
   <ul>
     <% @mibs.each do |mib| %>
-      <li><%= link_to_function(mib.first, "$('#oid').attr('value', '#{mib.last}');") %></li>
+      <li><%= link_to_function(mib.first, "$('#oid').attr('value', $('#oid').attr('value') + ',#{mib.last}');") %></li>
     <% end %>
   </ul>
 </div>

@@ -24,7 +24,7 @@ class MibBrowserController < ApplicationController
       oids_to_walk = params[:oid].split(",")
       
       @buffer = "<table>"
-      @buffer += "<tr>" + oids_to_walk.collect { |o| '<th>' + o + '</th>'}.join('') + "</tr>"
+      @buffer += "<tr>" + oids_to_walk.collect { |o| '<th>' + @manager.mib.by_oid[o] + '</th>'}.join('') + "</tr>"
       @manager.walk(oids_to_walk) { |row| @buffer += "<tr>#{row.collect { |r| '<td>' + r.value.to_s + '</td>'}.join('')}</tr>" }
       @buffer += "</table>"
     end
