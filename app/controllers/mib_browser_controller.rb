@@ -10,13 +10,13 @@ class MibBrowserController < ApplicationController
     
     
     if params[:value].present?
-      oid = params[:oid] + ".0"
+      oid = params[:oid].gsub(",", "") + ".0"
       binding= SNMP::VarBind.new(oid, SNMP::OctetString.new(params[:value]))
       @manager.set(binding)
     end
     
     if params[:type] == "Object"
-      oid = params[:oid] + ".0"
+      oid = params[:oid].gsub(",", "") + ".0"
       @snmp_response = @manager.get(oid)
     else
       @snmp_response = []
