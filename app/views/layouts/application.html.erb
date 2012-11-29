@@ -7,8 +7,10 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-
-<%= yield %>
-
+  <div id="alerts">
+    <%= subscribe_to "/alerts" %>
+  </div>
+  
+  <%= yield %>
 </body>
 </html>

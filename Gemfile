@@ -6,6 +6,11 @@ gem 'sqlite3'
 
 gem "snmp"
 
+# Faye wrapper gem, for broadcasting updates
+# bundle exec rackup private_pub.ru -s thin -E production
+gem "private_pub", :git => "https://github.com/vic/private_pub.git"
+gem "thin"
+
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
