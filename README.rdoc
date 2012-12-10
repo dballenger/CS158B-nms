@@ -6,13 +6,17 @@ Run bundle within the project directory to install necessary ruby libraries
 
 == Operation
 Start the server on port 3000, http://localhost:3000
+
 $ rails s
 
 Startup the Faye websockets server:
+
 $ bundle exec rackup ./private_pub.ru -s thin -E production -p 9293
 
 Startup the SNMP Trap listener:
+
 $ HOST=38.108.185.242 bundle exec rails c
+
 Make sure to set the HOST environmental variable to the IP on the interface traps will be sent to.
 
 Once the console loads with a prompt like irb(main):001:0>, enter SNMPTrap.start_listener and then hit enter once.
